@@ -3,8 +3,8 @@ function MathsGame(amountQuestions) {
     this.amountQuestions = amountQuestions;
     this.currentQuestion = 0;
     this.wrongAnswers = [];
-    this.started = false;
-    this.finished = false;
+    this.started = 0;
+    this.finished = 0;
     
     for (var i = 0; i < this.amountQuestions; i++) {
         this.questions.push(new Question());
@@ -14,26 +14,31 @@ function MathsGame(amountQuestions) {
 MathsGame.prototype.start = function() {
     if (!this.started) {
         $('#challenge label').html(this.questions[this.currentQuestion].questionString());
-        this.started = true;
+        this.started = this.getCurrentSeconds();
     }
 };
 
 MathsGame.prototype.saveAnswer = function() {
     this.questions[this.currentQuestion].userAnswer = parseInt($('#challenge input').val());
+    console.log(this.questions[this.currentQuestion].userAnswer);
+    if (this.questions[this.currentQuestion].userAnswer)
     $('#challenge input').val('');
 };
 
 MathsGame.prototype.newQuestion = function() {
-    this.saveAnswer();
-    if (this.currentQuestion < this.amountQuestions - 1) {
-        this.currentQuestion ++;
-        $('#challenge label').html(this.questions[this.currentQuestion].questionString());
-        
-    } else {
-        if (!this.finished) {
-            this.finished = true;
-            this.finish();
+    if (this.saveAnswer()) {
+        if (this.currentQuestion < this.amountQuestions - 1) {
+            this.currentQuestion ++;
+            $('#challenge label').html(this.questions[this.currentQuestion].questionString());
+
+        } else {
+            if (!this.finished) {
+                this.finished = this.getCurrentSeconds();
+                this.finish();
+            }
         }
+    } else {
+        consol.log('Please enter a number');
     }
 };
 
@@ -47,8 +52,13 @@ MathsGame.prototype.finish = function() {
         }
     }
     results = results + '<br> You scored ' + (this.amountQuestions-this.wrongAnswers.length) + ' out of ' + this.amountQuestions;
+    results = results + '<br> It took you ' + ((this.finished-this.started)/1000) + ' seconds';
     $('#result').html(results);
 };
+
+MathsGame.prototype.getCurrentSeconds = function() {
+    return new Date().getTime();
+}
 
 function Question(difficulty) {
     this.difficulty = 11; //at the moment this is just set to 11
