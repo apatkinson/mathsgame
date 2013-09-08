@@ -81,7 +81,7 @@ Question.prototype.questionString = function(){
 
 
 $(function(){
-    var mathsGame = new MathsGame(1);
+    var mathsGame = new MathsGame(10);
 
     $("body").keypress(function(e) {
         if (e.which == 32) {
