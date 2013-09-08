@@ -2,8 +2,10 @@ function MathsGame(amountQuestions) {
     this.questions = [];
     this.amountQuestions = amountQuestions;
     this.currentQuestion = 0;
+    this.wrongAnswers = [];
     this.started = false;
     this.finished = false;
+    
     for (var i = 0; i < this.amountQuestions; i++) {
         this.questions.push(new Question());
     }
@@ -37,11 +39,15 @@ MathsGame.prototype.newQuestion = function() {
 
 MathsGame.prototype.finish = function() {
     $('#challenge').hide();
-    var html = '';
+    var results = '';
     for (var i = 0; i < this.amountQuestions; i++) {
-        html = html + (i+1) + ' - was:' + this.questions[i].answer + ' your answer: ' + this.questions[i].userAnswer + '<br>';
+        if (this.questions[i].answer != this.questions[i].userAnswer) {
+            this.wrongAnswers.push(i);
+            results = results + '#'+(i+1) + ' - ' + this.questions[i].questionString() + ' = ' + this.questions[i].answer + '. Your answer: ' + this.questions[i].userAnswer + '<br>';
+        }
     }
-    $('#result').html(html);
+    results = results + '<br> You scored ' + (this.amountQuestions-this.wrongAnswers.length) + ' out of ' + this.amountQuestions;
+    $('#result').html(results);
 };
 
 function Question(difficulty) {
@@ -75,7 +81,7 @@ Question.prototype.questionString = function(){
 
 
 $(function(){
-    var mathsGame = new MathsGame(10);
+    var mathsGame = new MathsGame(1);
 
     $("body").keypress(function(e) {
         if (e.which == 32) {
