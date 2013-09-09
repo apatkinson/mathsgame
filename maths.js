@@ -21,8 +21,11 @@ MathsGame.prototype.start = function() {
 MathsGame.prototype.saveAnswer = function() {
     this.questions[this.currentQuestion].userAnswer = parseInt($('#challenge input').val());
     console.log(this.questions[this.currentQuestion].userAnswer);
-    if (this.questions[this.currentQuestion].userAnswer)
+    if (isNaN(this.questions[this.currentQuestion].userAnswer)) { 
+        return false;
+    }
     $('#challenge input').val('');
+    return true;
 };
 
 MathsGame.prototype.newQuestion = function() {
@@ -38,7 +41,7 @@ MathsGame.prototype.newQuestion = function() {
             }
         }
     } else {
-        consol.log('Please enter a number');
+        console.log('Please enter a number');
     }
 };
 
