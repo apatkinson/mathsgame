@@ -20,7 +20,6 @@ MathsGame.prototype.start = function() {
 
 MathsGame.prototype.saveAnswer = function() {
     this.questions[this.currentQuestion].userAnswer = parseInt($('#challenge input').val());
-    console.log(this.questions[this.currentQuestion].userAnswer);
     if (isNaN(this.questions[this.currentQuestion].userAnswer)) { 
         return false;
     }
@@ -41,6 +40,7 @@ MathsGame.prototype.newQuestion = function() {
             }
         }
     } else {
+        //should probably alert the user and not just the developer!
         console.log('Please enter a number');
     }
 };
@@ -62,36 +62,6 @@ MathsGame.prototype.finish = function() {
 MathsGame.prototype.getCurrentSeconds = function() {
     return new Date().getTime();
 }
-
-function Question(difficulty) {
-    this.difficulty = 11; //at the moment this is just set to 11
-    this.one = this.getRandomNumber();//number one
-    this.two = this.getRandomNumber();//number two
-    this.action = this.getAction();//what to do to the numbers
-    this.answer = this.getAnswer(); //the answer of the question
-    this.userAnswer = 0;//users answer
-}
-
-//generates a random Int
-Question.prototype.getRandomNumber = function() {
-    return parseInt(Math.floor(Math.random()*this.difficulty), 10);
-};
-
-//generates the action, (+, -,  /, *)
-Question.prototype.getAction = function() {
-    return '+';
-};
-
-//work out the answer
-Question.prototype.getAnswer = function() {
-    return this.one+this.two;
-}
-
-//returns the question string
-Question.prototype.questionString = function(){
-    return this.one + ' ' + this.action + ' ' + this.two;
-};
-
 
 $(function(){
     var mathsGame = new MathsGame(10);
