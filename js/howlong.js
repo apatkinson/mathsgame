@@ -11,25 +11,28 @@ function MathsGame() {
  */
 MathsGame.prototype.start = function() {
     if (!this.started) {    
-        this.writeNewQuestion();
-        this.started = true;
-        
-        self = this;
-        this.timerId = setInterval(function(){self.tick()}, 1000);
+        this.writeNewQuestion(); //write the new question to game
+        this.started = true; //mark it as started
     }
 };
 
 MathsGame.prototype.tick = function() {
-    console.log('tick');
-    if (this.questions[this.currentQuestion - 1].timeLimit) {
-        this.questions[this.currentQuestion - 1].timeLimit --;
-        console.log(this.questions[this.currentQuestion - 1].timeLimit);
-        
-        if (this.questions[this.currentQuestion - 1].timeLimit <= 0){
+    if (this.questions[this.currentQuestion].timeLimit) {
+        this.questions[this.currentQuestion].timeLimit --;
+        if (this.questions[this.currentQuestion].timeLimit <= 0){
             this.finish(2);
             clearInterval()
         }
     }
+    this.drawCountdown();
+}
+
+MathsGame.prototype.drawCountdown = function() {
+    var countdown = '';
+    if (this.questions != null) {
+        countdown = this.questions[this.currentQuestion].timeLimit;
+    }
+    $('.countdown').html(countdown);
 }
 
 /**
@@ -37,13 +40,13 @@ MathsGame.prototype.tick = function() {
  * check to see if it is the correct answer 
  */
 MathsGame.prototype.checkAnswer = function() {
-    if (this.questions[this.questions.length - 1].userAnswer != this.questions[this.questions.length - 1].answer) {
+    if (this.questions[this.currentQuestion].userAnswer != this.questions[this.currentQuestion].answer) {
         console.log('wrong answer, oops');
         this.finish(1);
         
         return false;
     }
-    if (isNaN(this.questions[this.questions.length - 1].userAnswer)) { 
+    if (isNaN(this.questions[this.currentQuestion].userAnswer)) { 
         
         return false;
     }
@@ -55,9 +58,9 @@ MathsGame.prototype.checkAnswer = function() {
  * save the answer that the user types.
  */
 MathsGame.prototype.saveAnswer = function() {
-    this.questions[this.questions.length - 1].userAnswer = parseInt($('#challenge input').val());
+    this.questions[this.currentQuestion].userAnswer = parseInt($('#challenge input').val());
     
-    if (isNaN(this.questions[this.questions.length - 1].userAnswer)) { 
+    if (isNaN(this.questions[this.currentQuestion].userAnswer)) { 
 
         return false; //the user has entered a non numeric number, do nothing.
     }
@@ -70,10 +73,16 @@ MathsGame.prototype.saveAnswer = function() {
  * and then write a new question to the page.
  */
 MathsGame.prototype.writeNewQuestion = function() {
-    $('#challenge input').val('');
+    $('#challenge input').val(''); //reset the value in the form
     this.questions.push(new Question()); //file is included to handle generation of a question object
-    $('#challenge label').html(this.questions[this.currentQuestion].questionString());
-    this.currentQuestion++;
+    this.currentQuestion = this.questions.length-1; //set the current question we are on, Q1 is 0 for array purposes.
+    this.drawCountdown() //draw a new countdown
+    $('#challenge label').html(this.questions[this.currentQuestion].questionString()); //write the question out
+    
+    
+    clearInterval(this.timerId);//clear old question timer
+    self = this; //start the timer.
+    this.timerId = setInterval(function(){self.tick()}, 1000);
 };
 
 /**
@@ -105,9 +114,9 @@ MathsGame.prototype.finish = function(exit) {
             results = results + '#'+(i+1) + ' - ' + this.questions[i].questionString() + ' = ' + this.questions[i].answer + '. Your answer: ' + this.questions[i].userAnswer + '<br>';
         }
     }
-    results = results + '<br> NOPE, ' + this.questions[(this.currentQuestion-1)].questionString() + ' is ' + this.questions[(this.currentQuestion-1)].answer;
-    results = results + '<br> You put: ' + this.questions[(this.currentQuestion-1)].userAnswer;
-    results = results + '<br> You scored: ' + (this.currentQuestion-1);
+    results = results + '<br> NOPE, ' + this.questions[this.currentQuestion].questionString() + ' is ' + this.questions[this.currentQuestion].answer;
+    results = results + '<br> You put: ' + this.questions[this.currentQuestion].userAnswer;
+    results = results + '<br> You scored: ' + (this.currentQuestion);
     $('#result').html(results);
 };
 
