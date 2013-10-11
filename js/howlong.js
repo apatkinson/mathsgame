@@ -81,7 +81,7 @@ MathsGame.prototype.writeNewQuestion = function() {
     this.drawCountdown() //draw a new countdown
     $('#challenge label').html(this.questions[this.currentQuestion].questionString()); //write the question out
     
-    this.difficulty = this.difficulty + 3;
+    this.difficulty = this.difficulty + this.currentQuestion;
     
     
     clearInterval(this.timerId);//clear old question timer
@@ -135,11 +135,12 @@ $(function(){
     var mathsGame = new MathsGame();
 
 $("body").keypress(function(e) {
-        if (e.which == 32) {
-            mathsGame.start();
-        }
         if (e.which == 13) {
-            mathsGame.nextQuestion();
+            if (mathsGame.started) {
+                mathsGame.nextQuestion();
+            } else {
+                mathsGame.start();
+            }
         }
     });
 });

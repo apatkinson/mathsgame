@@ -67,11 +67,12 @@ $(function(){
     var mathsGame = new MathsGame(10);
 
     $("body").keypress(function(e) {
-        if (e.which == 32) {
-            mathsGame.start();
-        }
         if (e.which == 13) {
-            mathsGame.newQuestion();
+            if (mathsGame.started) {
+                mathsGame.newQuestion();
+            } else {
+                mathsGame.start();
+            }
         }
     });
 });
