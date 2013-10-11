@@ -1,11 +1,19 @@
-function Question(difficulty) {
-    this.difficulty = 11; //at the moment this is just set to 11
+function Question(difficulty, timeLimit) {
+    if (difficulty == null) {
+        this.difficulty = 11; //at the moment this is just set to 11
+    } else {
+        this.difficulty = difficulty;
+    }
     this.one = this.getRandomNumber();//number one
     this.two = this.getRandomNumber();//number two
     this.action = this.getAction();//what to do to the numbers
     this.answer = this.getAnswer(); //the answer of the question
     this.userAnswer = 0;//users answer
-    this.timeLimit = 5;//how long to they have to answer the question
+    if (timeLimit == null) {
+        this.timeLimit = 10;//how long to they have to answer the question
+    } else {
+        this.timeLimit = timeLimit;
+    }
 }
 
 //generates a random Int

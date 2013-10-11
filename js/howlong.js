@@ -4,6 +4,8 @@ function MathsGame() {
     this.wrongAnswers = [];
     this.started = false;
     this.timerId = 0;
+    this.timeLimit = 10;
+    this.difficulty = 11;
 }
 
 /**
@@ -74,10 +76,12 @@ MathsGame.prototype.saveAnswer = function() {
  */
 MathsGame.prototype.writeNewQuestion = function() {
     $('#challenge input').val(''); //reset the value in the form
-    this.questions.push(new Question()); //file is included to handle generation of a question object
+    this.questions.push(new Question(this.difficulty, this.timeLimit)); //file is included to handle generation of a question object
     this.currentQuestion = this.questions.length-1; //set the current question we are on, Q1 is 0 for array purposes.
     this.drawCountdown() //draw a new countdown
     $('#challenge label').html(this.questions[this.currentQuestion].questionString()); //write the question out
+    
+    this.difficulty = this.difficulty + 3;
     
     
     clearInterval(this.timerId);//clear old question timer
