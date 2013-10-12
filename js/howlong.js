@@ -154,25 +154,22 @@ $(function(){
     $.getJSON( "/mathsgame/get-results.php", function( data ) {
         var items = [];
         $.each( data, function( key, val ) {
-            items.push( "<li id='" + key + "'>" + val + "</li>" );
+            items.push( val.name + " - " + val.score + "<br>" );
         });
-        $( "<ul/>", {
-            "class": "my-new-list",
-            html: items.join( "" )
-        }).appendTo( "#scores" );
+        $('#scores').append(items);
     });
     
-    $('name-submit').click(function(){
+    $('.name-submit').click(function(){
        if ($('.name').val() != ''){
            $.ajax({
                 type: "POST",
                 url: "/mathsgame/put-results.php",
-                data: { name: "andrew", score: 11 }
+                data: { name: "andrew", score: mathsGame.currentQuestion }
             })
                 .done(function( msg ) {
-                alert( "Data Saved: " + msg );
+                alert( "score added" );
+		location.reload();
             });
-        this.hide();
        } 
     });
     
