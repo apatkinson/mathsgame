@@ -130,17 +130,17 @@ MathsGame.prototype.finish = function(exit) {
  * get current seconds of the system
  */
 MathsGame.prototype.pressEnter = function() {
-    console.log('fd');
         if (this.started) {
             this.nextQuestion();
         } else {
             this.start();
         }
+        $('.input').focus();
 }
 
 $(function(){
     var mathsGame = new MathsGame();
-
+    $('.input').focus();
     $("body").keypress(function(e) {
         if (e.which == 13) {
             mathsGame.pressEnter(e); 
