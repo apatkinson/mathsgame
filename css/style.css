@@ -1,8 +1,23 @@
 body{
     font-size: 20px;
+    text-align: center;
 }
-input{
-    width: 100px;
-    height: 45px;
+
+#challenge label{
+    font-size: 40px;
+}
+#challenge input{
+    width: 350px;
+    height: 75px;
+    font-size: 40px;
+    text-align: center;
+}
+.countdown{
+    font-size:36px;
+    color:#999;
+}
+#enter{
+    width: 260px;
+    height: 80px;
     font-size: 20px;
 }

@@ -12,6 +12,7 @@ function MathsGame() {
  * Start the game, write a new question to the screen.
  */
 MathsGame.prototype.start = function() {
+    $('#instructions').hide();
     if (!this.started) {    
         this.writeNewQuestion(); //write the new question to game
         this.started = true; //mark it as started
@@ -111,6 +112,7 @@ MathsGame.prototype.nextQuestion = function() {
 MathsGame.prototype.finish = function(exit) {
     clearInterval(this.timerId);
     $('#challenge').hide();
+    $('#enter').hide();
     var results = '';
     for (var i = 0; i < this.amountQuestions; i++) {
         if (this.questions[i].answer != this.questions[i].userAnswer) {
@@ -127,20 +129,24 @@ MathsGame.prototype.finish = function(exit) {
 /**
  * get current seconds of the system
  */
-MathsGame.prototype.getCurrentSeconds = function() {
-    return new Date().getTime();
+MathsGame.prototype.pressEnter = function() {
+    console.log('fd');
+        if (this.started) {
+            this.nextQuestion();
+        } else {
+            this.start();
+        }
 }
 
 $(function(){
     var mathsGame = new MathsGame();
 
-$("body").keypress(function(e) {
+    $("body").keypress(function(e) {
         if (e.which == 13) {
-            if (mathsGame.started) {
-                mathsGame.nextQuestion();
-            } else {
-                mathsGame.start();
-            }
+            mathsGame.pressEnter(e); 
         }
+    });
+    $('#enter').click(function(){
+       mathsGame.pressEnter(); 
     });
 });
