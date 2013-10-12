@@ -9,6 +9,7 @@ function Question(difficulty, timeLimit) {
     this.action = this.getAction();//what to do to the numbers
     this.answer = this.getAnswer(); //the answer of the question
     this.userAnswer = 0;//users answer
+    this.score = 0;
     if (timeLimit == null) {
         this.timeLimit = 10;//how long to they have to answer the question
     } else {
