@@ -113,6 +113,7 @@ MathsGame.prototype.finish = function(exit) {
     clearInterval(this.timerId);
     $('#challenge').hide();
     $('#enter').hide();
+    $('#submit').show();
     var results = '';
     for (var i = 0; i < this.amountQuestions; i++) {
         if (this.questions[i].answer != this.questions[i].userAnswer) {
@@ -150,7 +151,7 @@ $(function(){
        mathsGame.pressEnter(); 
     });
     
-    $.getJSON( "http://apatkinson.com/mathsgame/get-results.php", function( data ) {
+    $.getJSON( "/mathsgame/get-results.php", function( data ) {
         var items = [];
         $.each( data, function( key, val ) {
             items.push( "<li id='" + key + "'>" + val + "</li>" );
@@ -160,4 +161,19 @@ $(function(){
             html: items.join( "" )
         }).appendTo( "#scores" );
     });
+    
+    $('name-submit').click(function(){
+       if ($('.name').val() != ''){
+           $.ajax({
+                type: "POST",
+                url: "/mathsgame/put-results.php",
+                data: { name: "andrew", score: 11 }
+            })
+                .done(function( msg ) {
+                alert( "Data Saved: " + msg );
+            });
+        this.hide();
+       } 
+    });
+    
 });
