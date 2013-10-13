@@ -164,9 +164,9 @@ $(function(){
            $.ajax({
                 type: "POST",
                 url: "/mathsgame/put-results.php",
-                data: { name: "andrew", score: mathsGame.currentQuestion }
+                data: { name: $('.name').val(), score: mathsGame.currentQuestion }
             })
-                .done(function( msg ) {
+                .done(function() {
                 alert( "score added" );
 		location.reload();
             });
